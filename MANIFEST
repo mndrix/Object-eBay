@@ -1,0 +1,15 @@
+SIGNATURE
+Build.PL
+Changes
+MANIFEST
+META.yml # Will be created by "make dist"
+README
+lib/Object/eBay.pm
+lib/Object/eBay/Item.pm
+lib/Object/eBay/ListingDetails.pm
+lib/Object/eBay/SellingStatus.pm
+lib/Object/eBay/User.pm
+t/0-signature.t
+t/00-load.t
+t/pod-coverage.t
+t/pod.t

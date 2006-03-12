@@ -1,9 +1,51 @@
 package Object::eBay;
-
-use warnings;
-use strict;
-
 our $VERSION = '0.0.1';
+
+use Class::Std {
+    use warnings;
+    use strict;
+    use Carp;
+
+    my $net_ebay;   # holds a singleton object
+
+    sub init {
+        my ($pkg, $net_ebay_object) = @_;
+        croak "init() requires a valid Net::eBay object"
+            if !defined $net_ebay_object;
+        $net_ebay = $net_ebay_object;
+    }
+
+    ##########################################################################
+    # Usage     : $result = Object::eBay->ask_ebay(
+    #               'GetItem',
+    #               { ItemID => 123455678 }
+    #             );
+    # Purpose   : dispatch an API call to eBay
+    # Returns   : a hashref with eBay's response
+    # Arguments : $api_call - the name of the eBay API call to make
+    #             $inputs   - a hashref giving input fields for the API call
+    # Throws    : "Unable to process the command ..."
+    #             "eBay error (...): ..."
+    # Comments  : throws an error if the API call couldn't be completed or
+    #             if eBay returns an error value
+    # See Also  : n/a
+    sub ask_ebay {
+        my ( $class, $command, $arguments ) = @_;
+
+        my $result = $net_ebay->submitRequest( $command, $arguments );
+        croak "Unable to process the command $command"
+            if !$result;
+
+        if ( exists $result->{Errors} ) {
+            my $errors  = $result->{Errors};
+            my $code    = $errors->{ErrorCode};
+            my $message = $errors->{LongMessage};
+            croak "eBay error ($code): $message";
+        }
+
+        return $result;
+    }
+}
 
 1;
 
@@ -11,7 +53,7 @@ __END__
 
 =head1 NAME
  
-Object::eBay - <One line description of module's purpose>
+Object::eBay - Object-oriented interface to the eBay API
  
  
 =head1 VERSION
@@ -20,60 +62,76 @@ This documentation refers to Object::eBay version 0.0.1
  
  
 =head1 SYNOPSIS
- 
+
     use Object::eBay;
-    # Brief but working code example(s) here showing the most common usage(s)
- 
-    # This section will be as far as many users bother reading
-    # so make it as educational and exemplary as possible.
-  
-  
+    my $ebay = # ... create a Net::eBay object ...
+    Object::eBay->init($ebay);
+    my $item = Object::eBay::Item->new(12345678);
+    print "Item #", $item->auction_number(), " titled '", $item->title(), "'\n"
+
 =head1 DESCRIPTION
  
-A full description of the module and its features.
-May include numerous subsections (i.e. =head2, =head3, etc.) 
+Object::eBay provides a simple object-oriented interface to the eBay API.
+Objects are created to represent entities dealing with eBay such as items,
+users, etc.  You won't want to create objects of the class L<Object::eBay> but
+rather of its subclasses such as: L<Object::eBay::Item> or
+L<Object::eBay::User>.
  
+=head1 PUBLIC METHODS
+
+The following methods are intended for general use.
  
-=head1 SUBROUTINES/METHODS 
- 
-A separate section listing the public components of the module's interface. 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module provides.
-Name the section accordingly.
- 
-In an object-oriented module, this section should begin with a sentence of the 
-form "An object of this class represents...", to give the reader a high-level
-context to help them understand the methods that are subsequently described.
- 
- 
+=head2 init
+
+  Object::eBay->init($net_ebay_object);
+
+Requires a single Net::eBay object as an argument.  This class method must be
+called before creating any Object::eBay objects.  The Net::eBay provided to
+C<init> object should be initialized and ready to perform eBay API calls.  All
+Object::eBay objects will use this Net::eBay object.
+
+=head2 PRIVATE METHODS
+
+The following methods are intended for internal use, but are documented here
+to make code maintenance and subclassing easier.
+
+=head2 ask_ebay
+
+    $res = Object::eBay->ask_ebay(
+        GetItem => {
+            ItemID => 12345678,
+            DetailLevel => 'ItemReturnDescription',
+        }
+    )
+
+A thin wrapper around L<Net::eBay/submitRequest> which performs API calls
+using eBay's API and encapsulates error handling.  If an error occurs during
+the API call, or eBay returns a result with an error, an exception is thrown.
+
 =head1 DIAGNOSTICS
- 
-A list of every error and warning message that the module can generate
-(even the ones that will "never happen"), with a full explanation of each 
-problem, one or more likely causes, and any suggested remedies.
- 
+
+=head2 init() requires a valid Net::eBay object
+
+This exception is thrown when L</init> is called without providing a
+Net::eBay object as the argument.
  
 =head1 CONFIGURATION AND ENVIRONMENT
  
 Object::eBay requires no configuration files or environment variables.
+However, L<Net::eBay> can make use of configuration files and that is often
+easier than including set up information in every program that uses
+L<Object::eBay>.
  
 =head1 DEPENDENCIES
  
-A list of all the other modules that this module relies upon, including any
-restrictions on versions, and an indication whether these required modules are
-part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
- 
+=head2 Net::eBay
+
+=head2 Class::Std
  
 =head1 INCOMPATIBILITIES
  
-A list of any modules that this module cannot be used in conjunction with.
-This may be due to name conflicts in the interface, or competition for 
-system or program resources, or due to internal limitations of Perl 
-(for example, many modules that use source code filters are mutually 
-incompatible).
- 
- 
+None known.
+
 =head1 BUGS AND LIMITATIONS
 
 Please report any bugs or feature requests to
@@ -112,13 +170,15 @@ L<http://search.cpan.org/dist/Object-eBay>
 
 =head1 ACKNOWLEDGEMENTS
 
+Igor Chudov for writing Net::eBay.
+
 =head1 AUTHOR
 
-Michael Hendricks  <michael@palmcluster.org>
+Michael Hendricks  <michael@ndrix.org>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+Copyright (c) 2006 Michael Hendricks (<michael@ndrix.org>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

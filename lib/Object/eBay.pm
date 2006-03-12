@@ -7,6 +7,7 @@ use Class::Std; {
     use Carp;
 
     my $net_ebay;   # holds a singleton object
+    my %details :ATTR( :name<details> );
 
     sub init {
         my ($pkg, $net_ebay_object) = @_;
@@ -73,9 +74,19 @@ use Class::Std; {
     # Comments  : none
     # See Also  : n/a
     sub simple_attributes {
-        my ($pkg, @attributes) = @_;
+        my ($pkg, @ebay_names) = @_;
 
-        for my $attribute (@attributes) {
+        # install a method for each eBay name
+        for my $ebay_name (@ebay_names) {
+            no strict 'refs';
+            my $method_name = $pkg->ebay_name_to_method_name($ebay_name);
+            *{ $pkg . "::$method_name" } = sub {
+                my ($self) = @_;
+                my $value = $self->get_details->{$ebay_name};
+                croak "Can't find $ebay_name via $method_name()"
+                    if !defined $value;
+                return $value;
+            };
         }
     }
 
@@ -103,7 +114,7 @@ This documentation refers to Object::eBay version 0.0.1
     use Object::eBay;
     my $ebay = # ... create a Net::eBay object ...
     Object::eBay->init($ebay);
-    my $item = Object::eBay::Item->new(12345678);
+    my $item = Object::eBay::Item->new({ id => 12345678 });
     print "Item #", $item->auction_number(), " titled '", $item->title(), "'\n"
 
 =head1 DESCRIPTION

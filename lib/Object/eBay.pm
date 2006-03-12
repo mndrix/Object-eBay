@@ -1,7 +1,7 @@
 package Object::eBay;
 our $VERSION = '0.0.1';
 
-use Class::Std {
+use Class::Std; {
     use warnings;
     use strict;
     use Carp;
@@ -13,6 +13,24 @@ use Class::Std {
         croak "init() requires a valid Net::eBay object"
             if !defined $net_ebay_object;
         $net_ebay = $net_ebay_object;
+    }
+
+    ##########################################################################
+    # Usage     : $method_name = Object::eBay->ebay_name_to_method_name($name)
+    # Purpose   : Convert eBay names into method names
+    # Returns   : a method name equivalent to the given eBay name
+    # Arguments : $name - an eBay name such as (Title or SellingStatus)
+    # Throws    : no exceptions
+    # Comments  : none
+    # See Also  : n/a
+    sub ebay_name_to_method_name {
+        my ($pkg, $ebay_name) = @_;
+        return $ebay_name if !$ebay_name;
+        $ebay_name =~ s{
+            ([[:lower:]])   # lower case letter
+            ([[:upper:]])   # followed by an upper case letter
+        }{$1_\l$2}xmsg;
+        return lc $ebay_name;
     }
 
     ##########################################################################
@@ -45,6 +63,25 @@ use Class::Std {
 
         return $result;
     }
+
+    #############################################################################
+    # Usage     : __PACKAGE__->simple_attributes('title', 'quantity')
+    # Purpose   : Define simple attributes for an Object::eBay subclass
+    # Returns   : none
+    # Arguments : a list of method names to implement
+    # Throws    : no exceptions
+    # Comments  : none
+    # See Also  : n/a
+    sub simple_attributes {
+        my ($pkg, @attributes) = @_;
+
+        for my $attribute (@attributes) {
+        }
+    }
+
+    sub complex_attributes {
+        # TODO implement me
+    }
 }
 
 1;
@@ -76,6 +113,19 @@ Objects are created to represent entities dealing with eBay such as items,
 users, etc.  You won't want to create objects of the class L<Object::eBay> but
 rather of its subclasses such as: L<Object::eBay::Item> or
 L<Object::eBay::User>.
+
+L<Object::eBay> follows some simple rules to make the names of eBay API
+objects more "Perlish."  Namely, for packages, eBay's camelcase is retained.
+For example L<Object::eBay::ListingDetails>.  For attribute names, the
+camelcase is converted to underscore separated method names with roughly the
+following algorithm:
+
+    Before each capital letter after the first one, place an underscore
+    Make all letters lowercase
+
+So, eBay's "FeedbackScore" becomes the method name "feedback_score".
+Generally, the transformation algorithm does what you'd expect.  Attributes
+like "ItemID" become "item_id" as anticipated.
  
 =head1 PUBLIC METHODS
 
@@ -93,7 +143,9 @@ Object::eBay objects will use this Net::eBay object.
 =head2 PRIVATE METHODS
 
 The following methods are intended for internal use, but are documented here
-to make code maintenance and subclassing easier.
+to make code maintenance and subclassing easier.  Most users of Object::eBay
+will never use these methods.  Instead, proceed to the documentation about the
+other Object::eBay classes.
 
 =head2 ask_ebay
 
@@ -107,6 +159,26 @@ to make code maintenance and subclassing easier.
 A thin wrapper around L<Net::eBay/submitRequest> which performs API calls
 using eBay's API and encapsulates error handling.  If an error occurs during
 the API call, or eBay returns a result with an error, an exception is thrown.
+
+=head2 ebay_name_to_method_name
+
+    $method_name = Object::eBay->ebay_name_to_method_name('SellingStatus')
+    # returns 'selling_status'
+
+Converts an eBay name in camelcase to a method name in lowercase with words
+separated by underscores.  This method implements the algorithm sketched in
+the L</DESCRIPTION> section.
+
+=head2 simple_attributes
+
+    __PACKAGE__->simple_attributes(qw{ Quantity Title });
+
+This method is called by subclasses of eBay::Object to create methods that map
+easily to attributes of eBay API return values.  The example above will create
+two methods: C<quantity> and C<title> which return the "Quantity" and "Title"
+attributes of the object in question.  The return value of methods created
+with C<simple_attributes> will be non-reference scalars.  For more complex
+mapping of eBay attributes to method names, see L</complex_attributes>.
 
 =head1 DIAGNOSTICS
 

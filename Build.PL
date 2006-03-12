@@ -8,6 +8,10 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Object/eBay.pm',
     sign                => 1,
     create_makefile_pl  => 'passthrough',
+    requires => {
+        'Class::Std' => '0.0.8',
+        'Net::eBay'  => '0.28',
+    },
     build_requires => {
         'Test::More' => 0,
     },

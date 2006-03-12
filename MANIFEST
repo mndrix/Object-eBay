@@ -11,5 +11,6 @@ lib/Object/eBay/SellingStatus.pm
 lib/Object/eBay/User.pm
 t/0-signature.t
 t/00-load.t
+t/01-name-conversion.t
 t/pod-coverage.t
 t/pod.t

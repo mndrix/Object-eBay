@@ -7,7 +7,7 @@ use Class::Std; {
     use Carp;
 
     my $net_ebay;   # holds a singleton object
-    my %details :ATTR( :name<details> );
+    my %details :ATTR( :get<details> );
 
     sub init {
         my ($pkg, $net_ebay_object) = @_;
@@ -82,8 +82,8 @@ use Class::Std; {
             my $method_name = $pkg->ebay_name_to_method_name($ebay_name);
             *{ $pkg . "::$method_name" } = sub {
                 my ($self) = @_;
-                my $value = $self->get_details->{$ebay_name};
-                croak "Can't find $ebay_name via $method_name()"
+                my $value = eval { $self->get_details->{$ebay_name} };
+                croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
                     if !defined $value;
                 return $value;
             };

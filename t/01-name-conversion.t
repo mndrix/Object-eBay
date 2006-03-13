@@ -11,12 +11,18 @@ my %tests = (
     ItemID         => 'item_id',
 );
 
-plan tests => (scalar keys %tests);
+plan tests => 2*(scalar keys %tests);
 
 while ( my ($ebay, $method) = each %tests ) { 
     is(
         Object::eBay->ebay_name_to_method_name($ebay),
         $method,
-        "$ebay -> $method"
+        "$ebay -> $method",
+    );
+
+    is(
+        Object::eBay->method_name_to_ebay_name($method),
+        $ebay,
+        "$method -> $ebay",
     );
 }

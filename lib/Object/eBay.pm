@@ -34,6 +34,25 @@ use Class::Std; {
         return lc $ebay_name;
     }
 
+    
+    #########################################################################
+    # Usage     : $ebay_name = Object::eBay->method_name_to_ebay_name($name)
+    # Purpose   : Convert a method name into an eBay name
+    # Returns   : an ebay name equivalent to the given method name
+    # Arguments : $name - a method name such as (title or selling_status)
+    # Throws    : no exceptions
+    # Comments  : none
+    # See Also  : n/a
+    sub method_name_to_ebay_name {
+        my ($pkg, $method_name) = @_;
+
+        my $ebay_name = join('',
+            map  { $_ eq 'id' ? uc : ucfirst }
+            split(/_/, $method_name)
+        );
+        return $ebay_name;
+    }
+
     ##########################################################################
     # Usage     : $result = Object::eBay->ask_ebay(
     #               'GetItem',

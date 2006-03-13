@@ -6,14 +6,31 @@ use Class::Std; {
     use strict;
     use Carp;
 
-    my $net_ebay;   # holds a singleton object
-    my %details :ATTR( :get<details> );
+    my $net_ebay;           # holds a singleton object
+    my %details_for :ATTR;
+    my %inputs_for  :ATTR( :get<api_inputs> );  # inputs to the API call
 
     sub init {
         my ($pkg, $net_ebay_object) = @_;
         croak "init() requires a valid Net::eBay object"
             if !defined $net_ebay_object;
         $net_ebay = $net_ebay_object;
+    }
+
+    sub BUILD {
+        my ($self, $ident, $args_ref) = @_;
+        $inputs_for{$ident} = $self->_convert_args($args_ref);
+    }
+    sub _convert_args {
+        my ($self, $args) = @_;
+
+        my %new_args;
+        for my $method_name (keys %$args) {
+            my $ebay_name = $self->method_name_to_ebay_name($method_name);
+            $new_args{$ebay_name} = $args->{$method_name};
+        }
+
+        return \%new_args;
     }
 
     ##########################################################################
@@ -70,6 +87,7 @@ use Class::Std; {
     sub ask_ebay {
         my ( $class, $command, $arguments ) = @_;
 
+        $DB::single = 1;
         my $result = $net_ebay->submitRequest( $command, $arguments );
         croak "Unable to process the command $command"
             if !$result;
@@ -82,6 +100,34 @@ use Class::Std; {
         }
 
         return $result;
+    }
+
+    #########################################################################
+    # Usage     : $details = $self->get_details()
+    # Purpose   : Retrieves the details for this object from eBay and caches
+    #             the results for later use.
+    # Returns   : A hash reference representing the details (this is very
+    #             similar to the result returned by Net::eBay::submitRequest
+    # Arguments : none
+    # Throws    : no exceptions
+    # Comments  : none
+    # See Also  : n/a
+    sub get_details {
+        my ($self) = @_;
+        my $ident = ident $self;
+
+        # look for a cached copy
+        my $details = $details_for{$ident};
+        return $details if $details;
+
+        # otherwise, ask eBay for the details
+        my $response = $self->ask_ebay(
+            $self->api_call(),
+            $self->api_inputs(),
+        );
+
+        # and cache the response
+        return $details_for{$ident} = $response->{ $self->response_field() };
     }
 
     #############################################################################
@@ -112,6 +158,8 @@ use Class::Std; {
     sub complex_attributes {
         # TODO implement me
     }
+
+    sub api_inputs { $_[0]->get_api_inputs() }
 }
 
 1;
@@ -133,7 +181,7 @@ This documentation refers to Object::eBay version 0.0.1
     use Object::eBay;
     my $ebay = # ... create a Net::eBay object ...
     Object::eBay->init($ebay);
-    my $item = Object::eBay::Item->new({ id => 12345678 });
+    my $item = Object::eBay::Item->new({ item_id => 12345678 });
     print "Item #", $item->auction_number(), " titled '", $item->title(), "'\n"
 
 =head1 DESCRIPTION
@@ -197,6 +245,15 @@ the API call, or eBay returns a result with an error, an exception is thrown.
 
 Converts an eBay name in camelcase to a method name in lowercase with words
 separated by underscores.  This method implements the algorithm sketched in
+the L</DESCRIPTION> section.
+
+=head2 method_name_to_ebay_name
+
+    $ebay_name = Object::eBay->method_name_to_ebay_name('selling_status')
+    # returns 'SellingStatus'
+
+Converts a method name with underscores separating words into an ebay name in
+camelcase.  This method implements the inverse of the algorithm sketched in
 the L</DESCRIPTION> section.
 
 =head2 simple_attributes

@@ -8,7 +8,7 @@ use Object::eBay;
 use Object::eBay::Item;
 
 Object::eBay->init( JJG::eBay->_ebay_object() );
-my $item = Object::eBay::Item->new({ id => 8267431549 });
+my $item = Object::eBay::Item->new({ item_id => 8267431549 });
 
 my $title = $item->title;
 my $quantity = $item->quantity;

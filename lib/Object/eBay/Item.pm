@@ -6,6 +6,9 @@ use Class::Std; {
     use strict;
     use base qw( Object::eBay );
 
+    sub api_call       { "GetItem" };
+    sub response_field { "Item"    };
+
     __PACKAGE__->simple_attributes(qw{
         Country
         Title

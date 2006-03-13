@@ -1,4 +1,9 @@
 ---
+version : 0.0.2
+date    :
+changes :
+    - BUG: Correctly handle warnings from eBay API calls
+---
 version : 0.0.1
 date    : Mon Mar 13 13:36:18 MST 2006
 changes :

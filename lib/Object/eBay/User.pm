@@ -1,9 +1,19 @@
 package Object::eBay::User;
-
-use warnings;
-use strict;
-
 our $VERSION = '0.0.1';
+
+use Class::Std; {
+    use warnings;
+    use strict;
+    use base qw( Object::eBay );
+
+    sub api_call       { "GetUser" };
+    sub response_field { "User"    };
+
+    __PACKAGE__->simple_attributes(qw{
+        FeedbackScore FeedbackPrivate
+    });
+
+}
 
 1;
 
@@ -11,7 +21,7 @@ __END__
 
 =head1 NAME
  
-Object::eBay::User - <One line description of module's purpose>
+Object::eBay::User - Represents an eBay user
  
  
 =head1 VERSION

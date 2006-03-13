@@ -18,9 +18,11 @@ my $quantity    = $item->quantity;
 my $country     = $item->country;
 my $description = $item->description;
 my $watch_count = $item->watch_count;
+my $seller_rating = $item->seller->feedback_score;
 
 print "title       : '$title'\n";
 print "quantity    : '$quantity'\n";
 print "country     : '$country'\n";
 print "watch count : '$watch_count'\n";
+print "seller rating : '$seller_rating'\n";
 print "description: '$description'\n";

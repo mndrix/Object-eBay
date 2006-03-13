@@ -5,6 +5,7 @@ use Class::Std; {
     use warnings;
     use strict;
     use Carp;
+    use Scalar::Util qw( blessed );
 
     my $net_ebay;           # holds a singleton object
     my %details_for :ATTR;
@@ -20,12 +21,15 @@ use Class::Std; {
     sub BUILD {
         my ($self, $ident, $args_ref) = @_;
 
+        my $object_details = delete $args_ref->{object_details};
         my $needs_methods = delete $args_ref->{needs_methods} || [];
         $inputs_for{$ident} = $self->_convert_args($args_ref);
 
         for my $method_name (@$needs_methods) {
             $self->_add_inputs( $self->$method_name(':meta') );
         }
+
+        $details_for{$ident} = $object_details if $object_details;
     }
     sub _convert_args {
         my ($self, $args) = @_;
@@ -195,6 +199,23 @@ use Class::Std; {
                 my $value = eval { $self->get_details->{$ebay_name} };
                 croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
                     if !defined $value;
+
+                return $value if blessed $value;  # already inflated the value
+
+                # inflate value into an object
+                if ( my $class_stub = $meta->{class} ) {
+                    my $class = "Object::eBay::$class_stub";
+                    $value = eval {
+                        eval "require $class";
+                        $class->new({ object_details => $value })
+                    };
+                    croak "Error inflating '$ebay_name': $@\n" if $@;
+                    croak "Can't inflate '$ebay_name' via ${pkg}::$method_name()"
+                        if !defined $value;
+                    $self->get_details->{$ebay_name} = $value;
+                    return $value;
+                }
+
                 return $value;
             };
         }
@@ -377,6 +398,21 @@ mapping of eBay attributes to method names, see L</complex_attributes>.
 
 This exception is thrown when L</init> is called without providing a
 Net::eBay object as the argument.
+
+=head2 Error inflating '%s': %s
+
+If calling the inflation subroutine defined by a Object::eBay subclass causes
+an exception, this exception will be thrown with the original exception
+message attached.
+
+=head2 Can't find '%s' via %s
+
+If the API response from eBay does not contain the raw information necessary
+to evaluate a method, this exception is thrown.
+
+=head2 Can't inflate '%s' via %s
+
+The result of inflating an attribute into an object was an undefined value.
  
 =head1 CONFIGURATION AND ENVIRONMENT
  

@@ -9,8 +9,9 @@ my $builder = Module::Build->new(
     sign                => 1,
     create_makefile_pl  => 'passthrough',
     requires => {
-        'Class::Std' => '0.0.8',
-        'Net::eBay'  => '0.28',
+        'Class::Std'   => '0.0.8',
+        'Net::eBay'    => '0.28',
+        'Scalar::Util' => '1.02',
     },
     build_requires => {
         'Test::More' => 0,

@@ -19,6 +19,12 @@ use Class::Std; {
         Seller => {
             class => 'User',
         },
+        SellingStatus => {
+            class => 'SellingStatus',
+        },
+        ListingDetails => {
+            class => 'ListingDetails',
+        },
         Description => {
             DetailLevel => 'ItemReturnDescription',
         },

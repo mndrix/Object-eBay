@@ -1,24 +1,32 @@
-package Object::eBay::SellingStatus;
+package Object::eBay::Currency;
 our $VERSION = '0.0.1';
 
 use Class::Std; {
     use warnings;
     use strict;
-    use base qw( Object::eBay );
 
-    # SellingStatus is a second-class citizen because there's no eBay API
-    # call that returns just a SellingStatus object.
-    sub api_call       { q{} };
-    sub response_field { q{} };
+    my %value_for       :ATTR( :get<value>       );
+    my %currency_id_for :ATTR( :get<currency_id> );
 
-    __PACKAGE__->complex_attributes({
-        CurrentPrice => {
-            class => 'Currency',
-        },
-        ConvertedCurrentPrice => {
-            class => 'Currency',
-        },
-    });
+    sub BUILD {
+        my ($self, $ident, $args_ref) = @_;
+        my $details = $args_ref->{object_details};
+        $value_for{$ident}       = $details->{content};
+        $currency_id_for{$ident} = $details->{currencyID};
+    }
+
+    sub as_string :STRINGIFY {
+        my ($self) = @_;
+        return $self->get_currency_id() . $self->get_value();
+    }
+
+    sub as_number :NUMERIFY {
+        $_[0]->get_value();
+    }
+
+    # aliases providing naming similar to other Object::eBay classes
+    sub value       { $_[0]->get_value()       }
+    sub currency_id { $_[0]->get_currency_id() }
 }
 
 1;
@@ -27,16 +35,17 @@ __END__
 
 =head1 NAME
 
-Object::eBay::SellingStatus - Represents an item's selling status
+Object::eBay::Currency - Represents a currency used by eBay
+
 
 =head1 VERSION
 
-This documentation refers to Object::eBay::SellingStatus version 0.0.1
+This documentation refers to Object::eBay::Currency version 0.0.1
 
 
 =head1 SYNOPSIS
 
-    use Object::eBay::SellingStatus;
+    use Object::eBay::Currency;
     # Brief but working code example(s) here showing the most common usage(s)
  
     # This section will be as far as many users bother reading
@@ -70,7 +79,7 @@ problem, one or more likely causes, and any suggested remedies.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Object::eBay::SellingStatus requires no configuration files or environment variables.
+Object::eBay::Currency requires no configuration files or environment variables.
 
 =head1 DEPENDENCIES
 
@@ -92,8 +101,8 @@ incompatible).
 =head1 BUGS AND LIMITATIONS
 
 Please report any bugs or feature requests to
-C<bug-object-ebay-sellingstatus at rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Object-eBay>.
+C<bug-[% rtname %] at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=[% self.distro %]>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 
@@ -101,7 +110,7 @@ your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Object::eBay
+    perldoc [% self.main_module %]
 
 You can also look for information at:
 
@@ -109,19 +118,19 @@ You can also look for information at:
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Object-eBay>
+L<http://annocpan.org/dist/[% self.distro %]>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Object-eBay>
+L<http://cpanratings.perl.org/d/[% self.distro %]>
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Object-eBay>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% self.distro %]>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Object-eBay>
+L<http://search.cpan.org/dist/[% self.distro %]>
 
 =back
 
@@ -129,11 +138,11 @@ L<http://search.cpan.org/dist/Object-eBay>
 
 =head1 AUTHOR
 
-Michael Hendricks  <michael@palmcluster.org>
+[% self.author %]  <[% self.email %]>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+Copyright (c) [% year %] [% self.author %] (<[% self.email %]>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

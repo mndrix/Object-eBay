@@ -6,9 +6,10 @@ META.yml # Will be created by "make dist"
 README
 lib/Object/eBay.pm
 lib/Object/eBay/Item.pm
+lib/Object/eBay/User.pm
 lib/Object/eBay/ListingDetails.pm
 lib/Object/eBay/SellingStatus.pm
-lib/Object/eBay/User.pm
+lib/Object/eBay/Currency.pm
 t/0-signature.t
 t/00-load.t
 t/01-name-conversion.t

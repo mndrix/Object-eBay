@@ -48,7 +48,7 @@ This documentation refers to Object::eBay::Currency version 0.0.1
     print "Going for $price\n";          # "Going for USD12.99"
     print "Bargain!\n" if $price < 20;   # numeric context
     
-    # accessors methods are also available
+    # accessor methods are also available
     my $currency_id = $price->currency_id; # just the currency ID
     my $value       = $price->value;       # same as numeric context
     my $string      = $price->as_string;   # same as string context
@@ -56,7 +56,7 @@ This documentation refers to Object::eBay::Currency version 0.0.1
 =head1 DESCRIPTION
 
 Many of eBay's API calls return values which represent an amount of a
-particular currency.  Items prices and a good example.  An
+particular currency.  Item prices are a good example.  An
 Object::eBay::Currency object represents a particular quantity of a particular
 currency.  Methods throughout Object::eBay return Currency objects where
 appropriate.

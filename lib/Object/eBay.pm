@@ -244,11 +244,13 @@ This documentation refers to Object::eBay version 0.0.1
     my $ebay = # ... create a Net::eBay object ...
     Object::eBay->init($ebay);
     my $item = Object::eBay::Item->new({ item_id => 12345678 });
-    print "Item #", $item->auction_number(), " titled '", $item->title(), "'\n"
+    my $title = $item->title();
+    my $price = $item->selling_status->current_price();
+    print "Item titled '$title' is going for $price\n"
 
 =head1 DESCRIPTION
  
-Object::eBay provides a simple object-oriented interface to the eBay API.
+Object::eBay provides an object-oriented interface to the eBay API.
 Objects are created to represent entities dealing with eBay such as items,
 users, etc.  You won't want to create objects of the class L<Object::eBay> but
 rather of its subclasses such as: L<Object::eBay::Item> or
@@ -275,16 +277,44 @@ The following methods are intended for general use.
 
   Object::eBay->init($net_ebay_object);
 
-Requires a single Net::eBay object as an argument.  This class method must be
-called before creating any Object::eBay objects.  The Net::eBay provided to
-C<init> object should be initialized and ready to perform eBay API calls.  All
-Object::eBay objects will use this Net::eBay object.
+Requires a single L<Net::eBay> object as an argument.  This class method must
+be called before creating any Object::eBay objects.  The L<Net::eBay> object
+provided to C<init> should be initialized and ready to perform eBay API
+calls.  All Object::eBay objects will use this L<Net::eBay> object.
 
 =head2 new
 
-TODO document this.  Remember to mention 'needs_methods'.
+This documentation covers functionality that is common to the C<new> method of
+all Object::eBay classes.  For details for specific class, see the appropriate
+class documentation.  The C<new> constructor tries to be as lazy as possible
+and will not invoke an eBay API call until it's really necessary.  Generally
+this happens when the first method is invoked on a new object.  After that,
+cached values from the API call are returned.  That means, each object should
+only cost use API call and that only if you call a method on the object.
 
-=head2 PRIVATE METHODS
+The C<new> method constructs a new object.  It accepts a single hashref as an
+argument.  Each subclass determines the values that are accepted or required.
+However, C<new> always accepts a key named 'needs_methods' to indicate which
+expensive methods you plan to use.  The value of this key should be an
+arrayref containing the names of the expensive methods you intend to call with
+the newly created object.
+
+Some eBay API calls return a lot of data, for example, the description of an
+item can be quite large.  To avoid a performance penalty for programs that
+don't use these expensive methods, Object::eBay avoids fetching the data
+unless you really need it.  You indicate to Object::eBay that you plan to use
+an expensive method by specifying it with the 'needs_methods' argument.
+Here's an example where we intend to access an item's description:
+
+    my $item = Object::eBay::Item->new({
+        item_id       => 123456789,
+        needs_methods => [qw( description )],
+    });
+
+Expensive methods indicate this in their documention so that you know in
+advance.  Take a look at L<Object::eBay::Item/description> for example.
+
+=head1 PRIVATE METHODS
 
 The following methods are intended for B<internal> use, but are documented
 here to make code maintenance and subclassing easier.  Most users of
@@ -422,10 +452,14 @@ easier than including set up information in every program that uses
 L<Object::eBay>.
  
 =head1 DEPENDENCIES
- 
-=head2 Net::eBay
 
-=head2 Class::Std
+=over 4
+ 
+=item * Class::Std
+
+=item * Net::eBay
+
+=back
  
 =head1 INCOMPATIBILITIES
  

@@ -19,7 +19,13 @@ use Class::Std; {
 
     sub BUILD {
         my ($self, $ident, $args_ref) = @_;
+
+        my $needs_methods = delete $args_ref->{needs_methods} || [];
         $inputs_for{$ident} = $self->_convert_args($args_ref);
+
+        for my $method_name (@$needs_methods) {
+            $self->_add_inputs( $self->$method_name(':meta') );
+        }
     }
     sub _convert_args {
         my ($self, $args) = @_;
@@ -31,6 +37,26 @@ use Class::Std; {
         }
 
         return \%new_args;
+    }
+    sub _add_inputs {
+        my ($self, $meta) = @_;
+        my $ident = ident $self;
+        
+        # handle each extra input
+        for my $input ( grep { /\A[A-Z]/ } keys %$meta ) {
+            my $new_value = $meta->{$input};
+
+            # handle conflicts
+            # TODO allow conflict resolution to be specified by subclasses
+            if ( exists $inputs_for{$ident}{$input} ) {
+                my $old_value = $inputs_for{$ident}{$input};
+                croak "Conflicting $input: '$old_value' and '$new_value'"
+                    if $input ne 'DetailLevel';
+                $new_value = 'ReturnAll';
+            }
+
+            $inputs_for{$ident}{$input} = $new_value;
+        }
     }
 
     ##########################################################################
@@ -87,7 +113,6 @@ use Class::Std; {
     sub ask_ebay {
         my ( $class, $command, $arguments ) = @_;
 
-        $DB::single = 1;
         my $result = $net_ebay->submitRequest( $command, $arguments );
         croak "Unable to process the command $command"
             if !$result;
@@ -156,7 +181,23 @@ use Class::Std; {
     }
 
     sub complex_attributes {
-        # TODO implement me
+        my ($pkg, $args) = @_;
+
+        while ( my ($ebay_name, $meta) = each %$args ) {
+            no strict 'refs';
+            my $method_name = $pkg->ebay_name_to_method_name($ebay_name);
+            *{ $pkg . "::$method_name" } = sub {
+                my ($self, $args) = @_;
+
+                # return meta info if requested
+                return $meta if $args && $args eq ':meta';
+
+                my $value = eval { $self->get_details->{$ebay_name} };
+                croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
+                    if !defined $value;
+                return $value;
+            };
+        }
     }
 
     sub api_inputs { $_[0]->get_api_inputs() }
@@ -218,6 +259,10 @@ called before creating any Object::eBay objects.  The Net::eBay provided to
 C<init> object should be initialized and ready to perform eBay API calls.  All
 Object::eBay objects will use this Net::eBay object.
 
+=head2 new
+
+TODO document this.  Remember to mention 'needs_methods'.
+
 =head2 PRIVATE METHODS
 
 The following methods are intended for B<internal> use, but are documented
@@ -248,6 +293,42 @@ object which does not yet have any details.
 A thin wrapper around L<Net::eBay/submitRequest> which performs API calls
 using eBay's API and encapsulates error handling.  If an error occurs during
 the API call, or eBay returns a result with an error, an exception is thrown.
+
+=head2 complex_attributes
+
+    __PACKAGE__->complex_attributes({
+        Seller => {
+            class => 'User',
+        },
+        Description => {
+            DetailLevel => 'ItemReturnDescription',
+        },
+        WatchCount => {
+            IncludeWatchCount => 'true',
+        },
+    });
+
+This method is called by subclasses of eBay::Object to create methods that map
+to attributes of eBay API return values.  The example above will create three
+methods: C<seller>, C<description> and C<watch_count>.  The return value of
+the C<seller> method will be an L<Object::eBay::User> object.  The return
+value of the C<description> and C<watch_count> methods will be non-reference
+scalars.
+
+The C<description> method requires that 'DetailLevel' be
+'ItemReturnDescription' or higher.  In addition to 'DetailLevel', any API
+Input value can be specified (for example 'IncludeWatchCount' in the sample
+above).  Object::eBay objects try to be lazy and request as little information
+from eBay as possible.  This is done by correlating arguments to
+C<complex_attributes> with the value of 'needs_methods' set when calling
+L</new>.
+
+The argument to C<complex_attributes> should be a single hash reference.  The
+keys of the hash should be eBay attribute names.  The value of each key should
+likewise be a hash reference.
+
+For simpler mapping of eBay attributes to method names, see
+L</simple_attributes>.
 
 =head2 ebay_name_to_method_name
 

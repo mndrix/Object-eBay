@@ -22,6 +22,9 @@ use Class::Std; {
         Description => {
             DetailLevel => 'ItemReturnDescription',
         },
+        WatchCount => {
+            IncludeWatchCount => 'true',
+        },
     });
 }
 

@@ -20,13 +20,9 @@ use Class::Std; {
         return $self->get_currency_id() . $self->get_value();
     }
 
-    sub as_number :NUMERIFY {
-        $_[0]->get_value();
-    }
-
     # aliases providing naming similar to other Object::eBay classes
-    sub value       { $_[0]->get_value()       }
-    sub currency_id { $_[0]->get_currency_id() }
+    sub value       :NUMERIFY { $_[0]->get_value()       }
+    sub currency_id           { $_[0]->get_currency_id() }
 }
 
 1;

@@ -1,5 +1,5 @@
 package Object::eBay::User;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 use Class::Std; {
     use warnings;
@@ -26,7 +26,7 @@ Object::eBay::User - Represents an eBay user
  
 =head1 VERSION
  
-This documentation refers to Object::eBay::User version 0.0.1
+This documentation refers to Object::eBay::User version 0.0.2
  
  
 =head1 SYNOPSIS

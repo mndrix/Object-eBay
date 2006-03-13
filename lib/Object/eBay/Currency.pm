@@ -1,5 +1,5 @@
 package Object::eBay::Currency;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 use Class::Std; {
     use warnings;
@@ -36,7 +36,7 @@ Object::eBay::Currency - Represents a currency used by eBay
 
 =head1 VERSION
 
-This documentation refers to Object::eBay::Currency version 0.0.1
+This documentation refers to Object::eBay::Currency version 0.0.2
 
 
 =head1 SYNOPSIS

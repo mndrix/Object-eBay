@@ -1,5 +1,5 @@
 package Object::eBay::ListingDetails;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 use Class::Std; {
     use warnings;
@@ -27,7 +27,7 @@ Object::eBay::ListingDetails - Represent's an items listing details
 
 =head1 VERSION
 
-This documentation refers to Object::eBay::ListingDetails version 0.0.1
+This documentation refers to Object::eBay::ListingDetails version 0.0.2
 
 
 =head1 SYNOPSIS

@@ -32,37 +32,28 @@ This documentation refers to Object::eBay::ListingDetails version 0.0.1
 
 =head1 SYNOPSIS
 
-    use Object::eBay::ListingDetails;
-    # Brief but working code example(s) here showing the most common usage(s)
- 
-    # This section will be as far as many users bother reading
-    # so make it as educational and exemplary as possible.
-
+    # assuming that $item contains an Object::eBay::Item object
+    my $end_time = $item->listing_details->end_time();
+    print "Ends: $end_time\n";   # "Ends: 2005-09-03T12:18:19.21.000Z"
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
-May include numerous subsections (i.e. =head2, =head3, etc.) 
+Represents listing details about an eBay item.
 
+=head1 METHODS 
 
-=head1 SUBROUTINES/METHODS 
+=head2 new
 
-A separate section listing the public components of the module's interface. 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module provides.
-Name the section accordingly.
+Objects of class Object::eBay::ListingDetails cannot be constructed directly.
 
-In an object-oriented module, this section should begin with a sentence of the 
-form "An object of this class represents...", to give the reader a high-level
-context to help them understand the methods that are subsequently described.
+=head2 end_time
 
+Returns an ISO8601 formatted string indicating the UTC time that the item
+ends.
 
 =head1 DIAGNOSTICS
 
-A list of every error and warning message that the module can generate
-(even the ones that will "never happen"), with a full explanation of each 
-problem, one or more likely causes, and any suggested remedies.
-
+None
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -70,20 +61,17 @@ Object::eBay::ListingDetails requires no configuration files or environment vari
 
 =head1 DEPENDENCIES
 
-A list of all the other modules that this module relies upon, including any
-restrictions on versions, and an indication whether these required modules are
-part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
+=over 4
 
+=item * Class::Std
+
+=item * Object::eBay
+
+=back
 
 =head1 INCOMPATIBILITIES
 
-A list of any modules that this module cannot be used in conjunction with.
-This may be due to name conflicts in the interface, or competition for 
-system or program resources, or due to internal limitations of Perl 
-(for example, many modules that use source code filters are mutually 
-incompatible).
-
+None known.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -125,11 +113,11 @@ L<http://search.cpan.org/dist/Object-eBay>
 
 =head1 AUTHOR
 
-Michael Hendricks  <michael@palmcluster.org>
+Michael Hendricks  <michael@ndrix.org>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+Copyright (c) 2006 Michael Hendricks (<michael@ndrix.org>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

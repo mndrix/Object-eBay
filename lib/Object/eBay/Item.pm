@@ -50,33 +50,65 @@ This documentation refers to Object::eBay::Item version 0.0.1
  
 =head1 SYNOPSIS
 
-    use Object::eBay;
+    # assuming that Object::eBay has already been initialized
     use Object::eBay::Item;
+    my $item = Object::eBay::Item->new({ item_id => 12345678 });
+
+    print "The item is titled '", $item->title(), "'\n";
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
-May include numerous subsections (i.e. =head2, =head3, etc.) 
+An Object::eBay::Item object represents an item that has been listed for sale
+on eBay.
 
+=head1 METHODS 
 
-=head1 SUBROUTINES/METHODS 
+=head2 new
 
-A separate section listing the public components of the module's interface. 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module provides.
-Name the section accordingly.
+=head2 country
 
-In an object-oriented module, this section should begin with a sentence of the 
-form "An object of this class represents...", to give the reader a high-level
-context to help them understand the methods that are subsequently described.
+Returns a code indicating the item's country.  This method may need to be
+deprecated because the docs on eBay are contradictory.  Use it with caution.
 
+=head2 description
+
+Returns the HTML text of the item's description.  If you plan to use this
+method on an Object::eBay::Item object, please specify 'description' in the
+C<needs_methods> list when creating the object (see L</new>).  If you don't
+specify C<needs_methods> correctly, this method will not be available.
+
+=head2 listing_details
+
+Returns a L<Object::eBay::ListingDetails> object.
+
+=head2 title
+
+Returns the title of the item.
+
+=head2 quantity
+
+Returns the quantity for sale with this item.
+
+=head2 seller
+
+Returns a L<Object::eBay::User> object representing the item's seller.  Not
+all methods of L<Object::eBay::User> are necessarily available.
+
+=head2 selling_status
+
+Returns a L<Object::eBay::SellingStatus> object 
+
+=head2 watch_count
+
+Returns the number of watches that have been place on this item via "My eBay"
+If you plan to use this
+method on an Object::eBay::Item object, please specify 'watch_count' in the
+C<needs_methods> list when creating the object (see L</new>).  If you don't
+specify C<needs_methods> correctly, this method will not be available.
 
 =head1 DIAGNOSTICS
 
-A list of every error and warning message that the module can generate
-(even the ones that will "never happen"), with a full explanation of each 
-problem, one or more likely causes, and any suggested remedies.
-
+None
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -84,20 +116,17 @@ Object::eBay::Item requires no configuration files or environment variables.
 
 =head1 DEPENDENCIES
 
-A list of all the other modules that this module relies upon, including any
-restrictions on versions, and an indication whether these required modules are
-part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
+=over 4
 
+=item * Class::Std
+
+=item * Object::eBay
+
+=back
 
 =head1 INCOMPATIBILITIES
 
-A list of any modules that this module cannot be used in conjunction with.
-This may be due to name conflicts in the interface, or competition for 
-system or program resources, or due to internal limitations of Perl 
-(for example, many modules that use source code filters are mutually 
-incompatible).
-
+None known.
 
 =head1 BUGS AND LIMITATIONS
 

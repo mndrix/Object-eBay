@@ -122,10 +122,13 @@ use Class::Std; {
             if !$result;
 
         if ( exists $result->{Errors} ) {
-            my $errors  = $result->{Errors};
-            my $code    = $errors->{ErrorCode};
-            my $message = $errors->{LongMessage};
-            croak "eBay error ($code): $message";
+            my $errors   = $result->{Errors};
+            my $severity = $errors->{SeverityCode};
+            if ( $severity ne 'Warning' ) {
+                my $code     = $errors->{ErrorCode};
+                my $message  = $errors->{LongMessage};
+                croak "eBay error ($code): $message";
+            }
         }
 
         return $result;
@@ -177,6 +180,7 @@ use Class::Std; {
             *{ $pkg . "::$method_name" } = sub {
                 my ($self) = @_;
                 my $value = eval { $self->get_details->{$ebay_name} };
+                croak $@ if $@ && $@ =~ /\A eBay/xms;
                 croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
                     if !defined $value;
                 return $value;
@@ -197,6 +201,7 @@ use Class::Std; {
                 return $meta if $args && $args eq ':meta';
 
                 my $value = eval { $self->get_details->{$ebay_name} };
+                croak $@ if $@ && $@ =~ /\A eBay/xms;
                 croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
                     if !defined $value;
 

@@ -220,10 +220,21 @@ Object::eBay objects will use this Net::eBay object.
 
 =head2 PRIVATE METHODS
 
-The following methods are intended for internal use, but are documented here
-to make code maintenance and subclassing easier.  Most users of Object::eBay
-will never use these methods.  Instead, proceed to the documentation about the
-other Object::eBay classes.
+The following methods are intended for B<internal> use, but are documented
+here to make code maintenance and subclassing easier.  Most users of
+Object::eBay will B<never use these methods>.  Instead, proceed to the
+documentation about the other Object::eBay classes: L</SEE ALSO>.
+
+=head2 api_inputs
+
+    $res = Object::eBay->ask_ebay(
+        $self->api_call(),
+        $self->api_inputs(),
+    );
+
+This method returns a hash reference containing all the inputs required by
+the invocant's API call.   This is used when retrieving the details about an
+object which does not yet have any details.
 
 =head2 ask_ebay
 
@@ -246,6 +257,18 @@ the API call, or eBay returns a result with an error, an exception is thrown.
 Converts an eBay name in camelcase to a method name in lowercase with words
 separated by underscores.  This method implements the algorithm sketched in
 the L</DESCRIPTION> section.
+
+=head2 get_details
+
+    $title = $item->get_details->{Title};
+
+Returns a hash reference containing detailed information about the invocant
+object.  This hash reference is a slightly modified version of the hashref
+returned by Net::eBay::submitRequest.  Again, this method is intended to be
+private.  If you want to access information about an Object::eBay object,
+please use an accessor method.  If there is no accessor method for the
+information you want, see L</HELPING OUT> for information on how to add the
+accessor method and then send me a patch.
 
 =head2 method_name_to_ebay_name
 
@@ -291,6 +314,27 @@ L<Object::eBay>.
  
 None known.
 
+=head1 HELPING OUT
+
+If you have any patches, please submit them through the RT bug tracking
+interface see L</BUGS AND LIMITATIONS>.  Right now, the most needed assistance
+is with filling out the objects and associated accessor methods.  To create a
+new Object::eBay subclass to implement an additional class of objects on eBay,
+you'll need to implement the following methods.  Take a look at
+L<Object::eBay::Item> for examples.
+
+=head2 api_call
+
+Override this method so that it returns the name of the eBay API call which
+should be invoked to return details about a particular object.  For example,
+the L<Object::eBay::Item> class defines this method to return "GetItem"
+
+=head2 response_field
+
+Override this method so that it returns the hash key which accesses all the
+important details about a particular object.  For example, the
+L<Object::eBay::Item> class defines this method to return "Item".
+
 =head1 BUGS AND LIMITATIONS
 
 Please report any bugs or feature requests to
@@ -324,6 +368,20 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Object-eBay>
 =item * Search CPAN
 
 L<http://search.cpan.org/dist/Object-eBay>
+
+=back
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<Object::eBay::Item>
+
+=item * L<Object::eBay::ListingDetails>
+
+=item * L<Object::eBay::SellingStatus>
+
+=item * L<Object::eBay::User>
 
 =back
 

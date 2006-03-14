@@ -1,6 +1,6 @@
 ---
 version : 0.0.2
-date    :
+date    : Tue Mar 14 08:28:16 MST 2006
 changes :
     FIXES:
         - Correctly handle warnings from eBay API calls

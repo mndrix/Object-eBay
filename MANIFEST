@@ -14,6 +14,8 @@ lib/Object/eBay/User.pm
 t/0-signature.t
 t/00-load.t
 t/01-name-conversion.t
+t/10-boolean.t
+t/10-currency.t
 t/pod-coverage.t
 t/pod.t
 Makefile.PL

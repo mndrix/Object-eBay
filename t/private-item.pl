@@ -7,9 +7,11 @@ use JJG::eBay;
 use Object::eBay;
 use Object::eBay::Item;
 
+my $item_id = shift @ARGV;
+
 Object::eBay->init( JJG::eBay->_ebay_object() );
 my $item = Object::eBay::Item->new({
-    item_id       => 8267431549,
+    item_id       => $item_id,
     #needs_methods => [qw( description watch_count )],
 });
 
@@ -23,6 +25,7 @@ my $seller_rating = $item->seller->feedback_score;
 my $current_price = $item->selling_status->current_price;
 my $converted_price = $item->selling_status->converted_current_price;
 my $end_time    = $item->listing_details->end_time;
+my @images      = $item->pictures;
 
 print "title       : '$title'\n";
 print "quantity    : '$quantity'\n";
@@ -35,4 +38,5 @@ print "seller rating : '$seller_rating'\n";
 print "current price : '$current_price' - ", 0+$current_price, "\n";
 print "converted price : '$converted_price' - ", 0+$converted_price, "\n";
 print "end time    : '$end_time'\n";
+print "Image: $_\n" for @images;
 #print "description: '$description'\n";

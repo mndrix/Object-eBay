@@ -10,7 +10,13 @@ use Class::Std; {
     sub response_field { "User"    };
 
     __PACKAGE__->simple_attributes(qw{
-        FeedbackScore FeedbackPrivate
+        FeedbackScore
+    });
+
+    __PACKAGE__->complex_attributes({
+        FeedbackPrivate => {
+            class => 'Boolean',
+        }
     });
 
 }

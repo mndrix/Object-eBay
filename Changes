@@ -5,6 +5,7 @@ changes :
     FIXES:
         - Correctly handle warnings from eBay API calls
         - Corrected minor typos in documentation
+        - Throw exceptions when Boolean and Currency are constructed poorly
     NEW:
         - Make boolean return values a context-aware object
 ---

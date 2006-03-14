@@ -4,6 +4,7 @@ our $VERSION = '0.0.2';
 use Class::Std; {
     use warnings;
     use strict;
+    use Carp;
 
     my %value_for       :ATTR( :get<value>       );
     my %currency_id_for :ATTR( :get<currency_id> );
@@ -11,6 +12,12 @@ use Class::Std; {
     sub BUILD {
         my ($self, $ident, $args_ref) = @_;
         my $details = $args_ref->{object_details};
+
+        my $msg = "Missing 'content' and/or 'currencyID'\n";
+        my $content = $details->{content};
+        my $id = $details->{currencyID};
+        croak $msg if !defined($content) || !defined($id);
+
         $value_for{$ident}       = $details->{content};
         $currency_id_for{$ident} = $details->{currencyID};
     }
@@ -94,7 +101,11 @@ This method provides the value for numeric context.
 
 =head1 DIAGNOSTICS
 
-None
+=head2 Missing 'content' and/or 'currencyID'
+
+This exception is thrown when trying to construct a Currency object from an
+invalid hashref.  This indicates a problem (or change) with eBay's XML
+response.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 

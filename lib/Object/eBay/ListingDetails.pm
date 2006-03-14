@@ -22,7 +22,7 @@ __END__
 
 =head1 NAME
 
-Object::eBay::ListingDetails - Represent's an items listing details
+Object::eBay::ListingDetails - Represents an item's listing details
 
 
 =head1 VERSION

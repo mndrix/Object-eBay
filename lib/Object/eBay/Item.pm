@@ -1,5 +1,5 @@
 package Object::eBay::Item;
-our $VERSION = '0.0.2';
+our $VERSION = '0.0.3';
 
 use Class::Std; {
     use warnings;
@@ -45,7 +45,7 @@ Object::eBay::Item - Represents an item listed on eBay
  
 =head1 VERSION
  
-This documentation refers to Object::eBay::Item version 0.0.2
+This documentation refers to Object::eBay::Item version 0.0.3
  
  
 =head1 SYNOPSIS

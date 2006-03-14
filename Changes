@@ -1,4 +1,8 @@
 ---
+version : 0.0.3
+date    :
+changes :
+---
 version : 0.0.2
 date    : Tue Mar 14 08:28:16 MST 2006
 changes :
@@ -12,4 +16,5 @@ changes :
 version : 0.0.1
 date    : Mon Mar 13 13:36:18 MST 2006
 changes :
-    - First version
+    NEW:
+        - First version

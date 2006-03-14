@@ -1,5 +1,5 @@
 package Object::eBay::SellingStatus;
-our $VERSION = '0.0.2';
+our $VERSION = '0.0.3';
 
 use Class::Std; {
     use warnings;
@@ -31,7 +31,7 @@ Object::eBay::SellingStatus - Represents an item's selling status
 
 =head1 VERSION
 
-This documentation refers to Object::eBay::SellingStatus version 0.0.2
+This documentation refers to Object::eBay::SellingStatus version 0.0.3
 
 
 =head1 SYNOPSIS

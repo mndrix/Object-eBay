@@ -32,6 +32,47 @@ use Class::Std; {
             IncludeWatchCount => 'true',
         },
     });
+
+
+    #########################################################################
+    # Usage     : my @images = $item->pictures()
+    # Purpose   : Combine various sources of pictures into one method
+    # Returns   : a list of image URLs
+    # Arguments : none
+    # Throws    : no exceptions
+    # Comments  : none
+    # See Also  : n/a
+    sub pictures {
+        my ($self) = @_;
+
+        # TODO this should probably be implemented in terms of other
+        # methods instead of manually searching the details hash
+        # but I haven't implement those other methods yet.
+
+        my @places = (
+            [qw( PictureDetails      GalleryURL    )],
+            [qw( PictureDetails      PictureURL    )],
+            [qw( SiteHostedPicture   PictureURL    )],  # deprecated
+            [qw( VendorHostedPicture SelfHostedURL )],  # deprecated
+        );
+        
+        my $details = $self->get_details();
+        return if !$details;
+
+        my @image_urls;
+        PLACE:
+        for my $place (@places) {
+            my ($major, $minor) = @$place;
+            next PLACE if !exists $details->{$major};
+            next PLACE if !exists $details->{$major}{$minor};
+
+            my $url = $details->{$major}{$minor};
+            next PLACE if !defined $url;
+            push @image_urls, ( ref $url eq 'ARRAY' ? @$url : $url );
+        }
+
+        return @image_urls;
+    }
 }
 
 1;
@@ -84,9 +125,15 @@ specify C<needs_methods> correctly, this method will not be available.
 
 Returns a L<Object::eBay::ListingDetails> object.
 
-=head2 title
+=head2 pictures
 
-Returns the title of the item.
+Returns a list of URLs for the pictures associated with this item.  The eBay
+API defines multiple ways in which images can be associated with a particular
+item.  This method searches each of those ways and returns a list of all the
+image URLs that it found.  If no images are found, an empty list is returned.
+At this time, the URLs are simple scalars and not objects, however that may
+change.  If the return value changes, the string context will still represent
+the URL as it does now.
 
 =head2 quantity
 
@@ -100,6 +147,10 @@ all methods of L<Object::eBay::User> are necessarily available.
 =head2 selling_status
 
 Returns a L<Object::eBay::SellingStatus> object 
+
+=head2 title
+
+Returns the title of the item.
 
 =head2 watch_count
 

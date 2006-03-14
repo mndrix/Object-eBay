@@ -4,12 +4,15 @@ our $VERSION = '0.0.2';
 use Class::Std; {
     use warnings;
     use strict;
+    use Carp;
 
     my %value_for :ATTR( :get<value> );
 
     sub BUILD {
         my ($self, $ident, $args_ref) = @_;
-        my $details = $args_ref->{object_details};
+        my $details = $args_ref->{object_details} || q{};
+        croak "Invalid boolean value '$details'\n"
+            unless $details eq 'true' || $details eq 'false';
         $value_for{$ident} = $details && $details eq 'true' ? 1 : 0;
     }
 
@@ -86,7 +89,11 @@ is the same as
 
 =head1 DIAGNOSTICS
 
-None
+=head2 Invalid boolean value '%s'
+
+If an Object::eBay::Boolean object is constructed with a value other than
+'true' or 'false', this exception is thrown.  Seeing this exception most
+likely indicates an error (or change) in eBay's XML response.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 

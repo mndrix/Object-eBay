@@ -248,6 +248,7 @@ This documentation refers to Object::eBay version 0.0.3
     use Object::eBay;
     my $ebay = # ... create a Net::eBay object ...
     Object::eBay->init($ebay);
+    
     my $item = Object::eBay::Item->new({ item_id => 12345678 });
     my $title = $item->title();
     my $price = $item->selling_status->current_price();
@@ -255,11 +256,12 @@ This documentation refers to Object::eBay version 0.0.3
 
 =head1 DESCRIPTION
  
-Object::eBay provides an object-oriented interface to the eBay API.
-Objects are created to represent entities dealing with eBay such as items,
-users, etc.  You won't want to create objects of the class L<Object::eBay> but
-rather of its subclasses such as: L<Object::eBay::Item> or
-L<Object::eBay::User>.
+Object::eBay provides an object-oriented interface to the eBay API.  Objects
+are created to represent entities dealing with eBay such as items, users, etc.
+You won't want to create objects of the class L<Object::eBay> but rather of
+its subclasses such as: L<Object::eBay::Item> or L<Object::eBay::User>.  eBay
+API calls are processed using the Perl module L<Net::eBay> (available from
+CPAN or from L<http://www.net-ebay.org>).
 
 L<Object::eBay> follows some simple rules to make the names of eBay API
 objects more "Perlish."  Namely, for packages, eBay's camelcase is retained.

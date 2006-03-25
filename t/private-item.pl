@@ -24,6 +24,7 @@ my $rating_private = $item->seller->feedback_private;
 my $seller_rating = $item->seller->feedback_score;
 my $current_price = $item->selling_status->current_price;
 my $converted_price = $item->selling_status->converted_current_price;
+my $bin_price = $item->buy_it_now_price;
 my $end_time    = $item->listing_details->end_time;
 my @images      = $item->pictures;
 
@@ -37,6 +38,7 @@ print "rating is public\n" if !$rating_private;
 print "seller rating : '$seller_rating'\n";
 print "current price : '$current_price' - ", 0+$current_price, "\n";
 print "converted price : '$converted_price' - ", 0+$converted_price, "\n";
+print "BIN price : $bin_price\n";
 print "end time    : '$end_time'\n";
 print "Image: $_\n" for @images;
 #print "description: '$description'\n";

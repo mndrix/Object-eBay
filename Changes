@@ -3,6 +3,7 @@ version : 0.0.3
 date    :
 changes :
     NEW:
+        - buy_it_now_price() method on Item
         - pictures() method on Item to get picture URLs
 ---
 version : 0.0.2

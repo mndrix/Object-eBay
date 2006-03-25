@@ -16,6 +16,9 @@ use Class::Std; {
     });
 
     __PACKAGE__->complex_attributes({
+        BuyItNowPrice => {
+            class => 'Currency',
+        },
         Seller => {
             class => 'User',
         },
@@ -108,6 +111,15 @@ on eBay.
 
 A single 'item_id' argument is required.  The valu of the argument should be
 the eBay item ID of the item you want to represent.
+
+=head2 buy_it_now_price
+
+Returns a L<Object::eBay::Currency> object indicating the "Buy It Now" price
+for this item.  If the item has no Buy It Now price, an exception is thrown.
+If you want C<buy_it_now_price> to return C<undef> if there is no BIN price,
+the following idiom will do the trick:
+
+    my $bin_price = eval { $item->buy_it_now_price };
 
 =head2 country
 

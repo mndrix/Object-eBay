@@ -2,6 +2,8 @@
 version : 0.0.3
 date    :
 changes :
+    FIXES:
+        - Object::eBay::Currency correctly supports boolean context
     NEW:
         - buy_it_now_price() method on Item
         - pictures() method on Item to get picture URLs

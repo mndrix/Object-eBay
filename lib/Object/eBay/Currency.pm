@@ -24,11 +24,12 @@ use Class::Std; {
 
     sub as_string :STRINGIFY {
         my ($self) = @_;
-        return $self->get_currency_id() . $self->get_value();
+        return $self->get_currency_id() . sprintf('%.2f', $self->get_value());
     }
 
     # aliases providing naming similar to other Object::eBay classes
     sub value       :NUMERIFY { $_[0]->get_value()       }
+    sub as_bool     :BOOLIFY  { $_[0]->get_value() != 0  }
     sub currency_id           { $_[0]->get_currency_id() }
 }
 
@@ -51,9 +52,10 @@ This documentation refers to Object::eBay::Currency version 0.0.3
     # assuming that $item is an Object::eBay::Item object
     my $price = $item->selling_status->current_price;
     
-    # supports string and numeric context
+    # supports string, numeric and boolean context
     print "Going for $price\n";          # "Going for USD12.99"
     print "Bargain!\n" if $price < 20;   # numeric context
+    print "Has price\n" if $price;       # boolean context
     
     # accessor methods are also available
     my $currency_id = $price->currency_id; # just the currency ID
@@ -68,11 +70,13 @@ Object::eBay::Currency object represents a particular quantity of a particular
 currency.  Methods throughout Object::eBay return Currency objects where
 appropriate.
 
-As mentioned in the L</SYNOPSIS> both string and numeric context are
+As mentioned in the L</SYNOPSIS> string, numeric and boolean context are
 supported.  In numeric context, the object evaluates to the amount of currency
 represented.  In string context, the object evaluates to a string which
-represents the currency and the quantity both (see L</as_string> for
-details).
+represents the currency and the quantity both (see L</as_string> for details).
+Boolean context returns the same value as numeric context.  This overloading
+of boolean context makes Object::eBay::Currency objects behave as expected in
+boolean context instead of returning true all the time.
 
 =head1 METHODS 
 
@@ -80,8 +84,9 @@ details).
 
 Returns a string representation of the currency amount.  The string is
 produced by concatenating the currency ID with the quantity.  For example 10
-U.S. Dollars is represented as 'USD10.00'  You may not be able to rely on the
-decimal behavior demonstrated in that example.
+U.S. Dollars is represented as 'USD10.00'  The value will always be rounded to
+two numbers after the decimal.  The rounding algorithm is that used by
+C<sprintf('%.2f')>.
 
 This method provides the value for string context.
 

@@ -115,11 +115,9 @@ the eBay item ID of the item you want to represent.
 =head2 buy_it_now_price
 
 Returns a L<Object::eBay::Currency> object indicating the "Buy It Now" price
-for this item.  If the item has no Buy It Now price, an exception is thrown.
-If you want C<buy_it_now_price> to return C<undef> if there is no BIN price,
-the following idiom will do the trick:
-
-    my $bin_price = eval { $item->buy_it_now_price };
+for this item.  If the item has no Buy It Now price, a price of "0" is
+returned.  Although this may not be optimal behavior, it adhere's to eBay's
+usage.
 
 =head2 country
 

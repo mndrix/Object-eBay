@@ -80,6 +80,12 @@ boolean context instead of returning true all the time.
 
 =head1 METHODS 
 
+=head2 as_bool
+
+Returns a boolean representation of the currency amount.  Namely, if the
+currency amount is 0, false is returned.  Otherwise, true is returned.  This
+method provides the implementation for boolean context.
+
 =head2 as_string
 
 Returns a string representation of the currency amount.  The string is

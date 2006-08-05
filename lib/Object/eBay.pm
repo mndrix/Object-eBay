@@ -545,6 +545,8 @@ L<http://search.cpan.org/dist/Object-eBay>
 
 =head1 ACKNOWLEDGEMENTS
 
+JJ Games for sponsoring the original development L<http://jjgames.com>.
+
 Igor Chudov for writing Net::eBay.
 
 =head1 AUTHOR

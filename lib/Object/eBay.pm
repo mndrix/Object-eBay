@@ -551,11 +551,11 @@ Igor Chudov for writing Net::eBay.
 
 =head1 AUTHOR
 
-Michael Hendricks  <michael@ndrix.org>
+Michael Hendricks  <michael@ndrix.com>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2006 Michael Hendricks (<michael@ndrix.org>). All rights
+Copyright (c) 2006-2007 Michael Hendricks (<michael@ndrix.com>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

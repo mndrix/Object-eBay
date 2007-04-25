@@ -1,6 +1,6 @@
 ---
 version : 0.0.3
-date    :
+date    : Wed Apr 25 15:40:32 MDT 2007
 changes :
     FIXES:
         - Object::eBay::Currency correctly supports boolean context

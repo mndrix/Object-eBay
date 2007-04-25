@@ -6,7 +6,6 @@ my $builder = Module::Build->new(
     module_name         => 'Object::eBay',
     license             => 'perl',
     dist_version_from   => 'lib/Object/eBay.pm',
-    sign                => 1,
     create_makefile_pl  => 'passthrough',
     requires => {
         'Class::Std'   => '0.0.8',

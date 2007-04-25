@@ -7,6 +7,8 @@ changes :
     NEW:
         - buy_it_now_price() method on Item
         - pictures() method on Item to get picture URLs
+        - mention that source code is available with Git
+        - mention paid development
 ---
 version : 0.0.2
 date    : Tue Mar 14 08:28:16 MST 2006

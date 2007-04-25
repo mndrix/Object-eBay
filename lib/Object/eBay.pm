@@ -474,6 +474,9 @@ None known.
 
 =head1 HELPING OUT
 
+The latest source code for Object-eBay is available with git from
+L<git://ndrix.com/Object-eBay>
+
 If you have any patches, please submit them through the RT bug tracking
 interface see L</BUGS AND LIMITATIONS>.  Right now, the most needed assistance
 is with filling out the objects and associated accessor methods.  To create a
@@ -526,6 +529,10 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Object-eBay>
 =item * Search CPAN
 
 L<http://search.cpan.org/dist/Object-eBay>
+
+=item * Paid Support and Development
+
+L<http://www.ndrix.com>
 
 =back
 

@@ -1,4 +1,10 @@
 ---
+version : 0.0.4
+date    :
+changes :
+    FIXES:
+        - minor documentation corrections
+---
 version : 0.0.3
 date    : Wed Apr 25 15:40:32 MDT 2007
 changes :

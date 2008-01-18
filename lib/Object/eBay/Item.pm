@@ -109,7 +109,7 @@ on eBay.
 
 =head2 new
 
-A single 'item_id' argument is required.  The valu of the argument should be
+A single 'item_id' argument is required.  The value of the argument should be
 the eBay item ID of the item you want to represent.
 
 =head2 buy_it_now_price

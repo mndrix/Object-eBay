@@ -554,6 +554,9 @@ L<http://www.ndrix.com>
 
 JJ Games for sponsoring the original development L<http://www.jjgames.com>.
 
+Video Game Price Charts for sponsoring further development
+L<http://www.videogamepricecharts.com>.
+
 Igor Chudov for writing Net::eBay.
 
 =head1 AUTHOR

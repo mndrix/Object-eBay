@@ -7,6 +7,8 @@ changes :
     NEW:
         - added SellingStatus->listing_status
         - added Item->item_id
+        - provide a URL for browsing the Git repository
+        - added Item->is_ended
 ---
 version : 0.0.3
 date    : Wed Apr 25 15:40:32 MDT 2007

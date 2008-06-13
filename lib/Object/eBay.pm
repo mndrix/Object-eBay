@@ -469,7 +469,8 @@ None known.
 =head1 HELPING OUT
 
 The latest source code for Object-eBay is available with git from
-L<git://ndrix.com/Object-eBay>
+L<git://ndrix.com/Object-eBay>.  You may also browse the repository
+at L<http://git.ndrix.com/?p=Object-eBay;a=summary>.
 
 If you have any patches, please submit them through the RT bug tracking
 interface see L</BUGS AND LIMITATIONS>.  Right now, the most needed assistance

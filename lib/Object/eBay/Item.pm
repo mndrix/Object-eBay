@@ -39,6 +39,17 @@ use Class::Std; {
 
     sub item_id  { shift->api_inputs->{ItemID} }
 
+    sub is_ended {
+        my ($self) = @_;
+        my $status = $self->selling_status->listing_status;
+        die "eBay item #$self has no listing status\n" if not defined $status;
+
+        return   if $status eq 'Active';
+        return 1 if $status eq 'Ended';
+        return 1 if $status eq 'Completed';
+        die "eBay item #$self has an unknown listing status: $status\n";
+    }
+
     #########################################################################
     # Usage     : my @images = $item->pictures()
     # Purpose   : Combine various sources of pictures into one method
@@ -126,6 +137,11 @@ Returns the HTML text of the item's description.  If you plan to use this
 method on an Object::eBay::Item object, please specify 'description' in the
 C<needs_methods> list when creating the object (see L</new>).  If you don't
 specify C<needs_methods> correctly, this method will not be available.
+
+=head2 is_ended
+
+Returns true if the eBay auction for this item has ended.  Otherwise, it
+returns false.
 
 =head2 item_id
 

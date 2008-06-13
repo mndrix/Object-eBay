@@ -5,6 +5,7 @@ use Class::Std; {
     use warnings;
     use strict;
     use base qw( Object::eBay );
+    use overload '""' => 'item_id', fallback => 1;
 
     sub api_call       { "GetItem" };
     sub response_field { "Item"    };
@@ -36,6 +37,7 @@ use Class::Std; {
         },
     });
 
+    sub item_id  { shift->api_inputs->{ItemID} }
 
     #########################################################################
     # Usage     : my @images = $item->pictures()
@@ -124,6 +126,12 @@ Returns the HTML text of the item's description.  If you plan to use this
 method on an Object::eBay::Item object, please specify 'description' in the
 C<needs_methods> list when creating the object (see L</new>).  If you don't
 specify C<needs_methods> correctly, this method will not be available.
+
+=head2 item_id
+
+Returns the eBay item ID for this auction.  This is the same as the
+"item_id" argument to L</new>.  This method also provides the value
+when an Item object is used in string context.
 
 =head2 listing_details
 

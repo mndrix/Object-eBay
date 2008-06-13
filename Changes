@@ -6,6 +6,7 @@ changes :
         - minor documentation corrections
     NEW:
         - added SellingStatus->listing_status
+        - added Item->item_id
 ---
 version : 0.0.3
 date    : Wed Apr 25 15:40:32 MDT 2007

@@ -11,6 +11,7 @@ use Class::Std; {
     sub api_call       { q{} };
     sub response_field { q{} };
 
+    __PACKAGE__->simple_attributes('ListingStatus');
     __PACKAGE__->complex_attributes({
         CurrentPrice => {
             class => 'Currency',
@@ -55,6 +56,21 @@ is probably going to be in U.S. Dollars.
 
 Returns an L<Object::eBay::Currency> object indicating the price of an item.
 The price will be in whatever currency the seller designated.
+
+=head2 listing_status
+
+Returns one of the following statuses about the listing.  See eBay's
+GetItem documentation at
+L<http://developer.ebay.com/DevZone/XML/docs/Reference/eBay/GetItem.html> for
+the meaning of each term.
+
+    * Active
+    * Completed
+    * Ended
+    * Custom (eBay internal or future use only)
+    * CustomCode (eBay internal or future use only)
+
+See also L<Object::eBay::Item/is_ended>.
 
 =head1 DIAGNOSTICS
 

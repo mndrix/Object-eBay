@@ -163,7 +163,7 @@ use Class::Std; {
     }
 
     #############################################################################
-    # Usage     : __PACKAGE__->simple_attributes('title', 'quantity')
+    # Usage     : __PACKAGE__->simple_attributes('Title', 'Quantity')
     # Purpose   : Define simple attributes for an Object::eBay subclass
     # Returns   : none
     # Arguments : a list of method names to implement

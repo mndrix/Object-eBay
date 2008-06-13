@@ -9,6 +9,7 @@ changes :
         - added Item->item_id
         - provide a URL for browsing the Git repository
         - added Item->is_ended
+        - added SellingStatus->quantity_sold
 ---
 version : 0.0.3
 date    : Wed Apr 25 15:40:32 MDT 2007

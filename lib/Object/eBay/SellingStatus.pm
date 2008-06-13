@@ -11,7 +11,7 @@ use Class::Std; {
     sub api_call       { q{} };
     sub response_field { q{} };
 
-    __PACKAGE__->simple_attributes('ListingStatus');
+    __PACKAGE__->simple_attributes( 'ListingStatus', 'QuantitySold' );
     __PACKAGE__->complex_attributes({
         CurrentPrice => {
             class => 'Currency',
@@ -71,6 +71,11 @@ the meaning of each term.
     * CustomCode (eBay internal or future use only)
 
 See also L<Object::eBay::Item/is_ended>.
+
+=head2 quantity_sold
+
+Returns the number of items sold during this auction.  If the auction had a
+successful buyer, the value will be greater than 0.  Otherwise, it will be 0.
 
 =head1 DIAGNOSTICS
 

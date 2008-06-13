@@ -10,6 +10,7 @@ changes :
         - provide a URL for browsing the Git repository
         - added Item->is_ended
         - added SellingStatus->quantity_sold
+        - added ListingDetails->end_datetime
 ---
 version : 0.0.3
 date    : Wed Apr 25 15:40:32 MDT 2007

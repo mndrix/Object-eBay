@@ -14,6 +14,22 @@ use Class::Std; {
     __PACKAGE__->simple_attributes(qw{
         EndTime
     });
+
+    sub end_datetime {
+        my ($self) = @_;
+        my $iso = $self->end_time or die "EndTime was unavailable\n";
+        require DateTime;
+        my ($y, $m, $d, $h, $min, $s) = split /[-T:.]/, $iso;
+        return DateTime->new(
+            year      => $y,
+            month     => $m,
+            day       => $d,
+            hour      => $h,
+            minute    => $min,
+            second    => $s,
+            time_zone => 'UTC',
+        );
+    }
 }
 
 1;
@@ -39,6 +55,12 @@ Represents listing details about an eBay item.
 =head2 new
 
 Objects of class Object::eBay::ListingDetails cannot be constructed directly.
+
+=head2 end_datetime
+
+Similar to L</end_time> except it returns a L<DateTime> object.
+If this method is invoked, you must have a version of the L<DateTime>
+package installed.
 
 =head2 end_time
 

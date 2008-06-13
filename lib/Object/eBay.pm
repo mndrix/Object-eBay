@@ -1,5 +1,5 @@
 package Object::eBay;
-our $VERSION = '0.0.3';
+our $VERSION = '0.1.0';
 
 use Class::Std; {
     use warnings;
@@ -236,12 +236,6 @@ __END__
 =head1 NAME
  
 Object::eBay - Object-oriented interface to the eBay API
- 
- 
-=head1 VERSION
- 
-This documentation refers to Object::eBay version 0.0.3
- 
  
 =head1 SYNOPSIS
 

@@ -1,5 +1,5 @@
 package Object::eBay::Boolean;
-our $VERSION = '0.0.3';
+our $VERSION = '0.1.0';
 
 use Class::Std; {
     use warnings;
@@ -34,12 +34,6 @@ __END__
 =head1 NAME
 
 Object::eBay::Boolean - Represents a boolean return value
-
-
-=head1 VERSION
-
-This documentation refers to Object::eBay::Boolean version 0.0.3
-
 
 =head1 SYNOPSIS
 

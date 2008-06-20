@@ -13,22 +13,19 @@ use Class::Std; {
 
     __PACKAGE__->simple_attributes(qw{
         EndTime
+        StartTime
     });
 
     sub end_datetime {
         my ($self) = @_;
         my $iso = $self->end_time or die "EndTime was unavailable\n";
-        require DateTime;
-        my ($y, $m, $d, $h, $min, $s) = split /[-T:.]/, $iso;
-        return DateTime->new(
-            year      => $y,
-            month     => $m,
-            day       => $d,
-            hour      => $h,
-            minute    => $min,
-            second    => $s,
-            time_zone => 'UTC',
-        );
+        return $self->_make_datetime($iso);
+    }
+
+    sub start_datetime {
+        my ($self) = @_;
+        my $iso = $self->start_time or die "StartTime was unavailable\n";
+        return $self->_make_datetime($iso);
     }
 }
 
@@ -65,7 +62,20 @@ package installed.
 =head2 end_time
 
 Returns an ISO8601 formatted string indicating the UTC time that the item
-ends.
+is scheduled to end.  If the item has ended, it indicates the time when
+the item ended.
+
+=head2 start_datetime
+
+Similar to L</start_time> except it returns a L<DateTime> object.
+If this method is invoked, you must have a version of the L<DateTime>
+package installed.
+
+=head2 start_time
+
+Returns an ISO8601 formatted string indicating the UTC time that the item
+started.
+
 
 =head1 DIAGNOSTICS
 

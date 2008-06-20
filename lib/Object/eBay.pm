@@ -62,6 +62,20 @@ use Class::Std; {
             $inputs_for{$ident}{$input} = $new_value;
         }
     }
+    sub _make_datetime {
+        my ($self, $iso) = @_;
+        require DateTime;
+        my ($y, $m, $d, $h, $min, $s) = split /[-T:.]/, $iso;
+        return DateTime->new(
+            year      => $y,
+            month     => $m,
+            day       => $d,
+            hour      => $h,
+            minute    => $min,
+            second    => $s,
+            time_zone => 'UTC',
+        );
+    }
 
     ##########################################################################
     # Usage     : $method_name = Object::eBay->ebay_name_to_method_name($name)

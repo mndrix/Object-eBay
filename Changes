@@ -7,6 +7,7 @@ changes :
     FIXES:
         - minor documentation corrections
     NEW:
+        - new true and false methods on the Boolean class
         - added ListingDetails->start_time
         - added ListingDetails->start_datetime
 ---

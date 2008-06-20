@@ -25,6 +25,9 @@ use Class::Std; {
         my ($self) = @_;
         return $self->get_value();
     }
+
+    sub true  { shift->new({ object_details => 'true' })  }
+    sub false { shift->new({ object_details => 'false' }) }
 }
 
 1;
@@ -60,6 +63,16 @@ expected.  In string context, the value is eBay's literal 'true' or 'false'
 value.
 
 =head1 METHODS 
+
+=head2 true
+
+A class method that returns a new L<Object::eBay::Boolean> object representing
+true.
+
+=head2 false
+
+A class method that returns a new L<Object::eBay::Boolean> object representing
+false.
 
 =head2 as_boolean
 

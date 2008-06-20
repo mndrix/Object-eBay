@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 9;
 
 use Object::eBay::Boolean;
 
@@ -12,6 +12,19 @@ use Object::eBay::Boolean;
 
 {
     my $b = Object::eBay::Boolean->new({ object_details => 'false' });
+    is( "$b", 'false', 'false: string' );
+    ok( !$b, 'false: boolean' );
+}
+
+# test the quick object creating methods
+{
+    my $b = Object::eBay::Boolean->true;
+    is( "$b", 'true', 'true: string' );
+    ok( $b, 'true: boolean' );
+}
+
+{
+    my $b = Object::eBay::Boolean->false;
     is( "$b", 'false', 'false: string' );
     ok( !$b, 'false: boolean' );
 }

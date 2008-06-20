@@ -1,7 +1,6 @@
 use strict;
 use warnings;
-use lib qw( /home/michael/clients/jjgames/website/catalyst/lib );
-use lib qw( /home/michael/projects/perl/Object-eBay/lib );
+use lib qw( /Users/michael/clients/jjgames/git/JJG/lib );
 
 use JJG::eBay;
 use Object::eBay;
@@ -20,7 +19,7 @@ my $quantity    = $item->quantity;
 my $country     = $item->country;
 #my $description = $item->description;
 #my $watch_count = $item->watch_count;
-my $rating_private = $item->seller->feedback_private;
+my $rating_private = $item->seller->is_feedback_private;
 my $seller_rating = $item->seller->feedback_score;
 my $current_price = $item->selling_status->current_price;
 my $converted_price = $item->selling_status->converted_current_price;

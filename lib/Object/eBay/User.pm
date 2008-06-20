@@ -19,6 +19,9 @@ use Class::Std; {
         }
     });
 
+    # name the boolean method with is_ to be consistent
+    sub is_feedback_private { shift->feedback_private }
+
 }
 
 1;
@@ -52,13 +55,11 @@ represent.
 
 Returns an integere indicating the user's feedback score.
 
-=head2 feedback_private
+=head2 is_feedback_private
 
-Returns 'true' if the user's feedback score is private.  Returns 'false' if
-the user's feedback score is public.  In future releases, the return value may
-change into an object which correctly handles boolean context however string
-context will retain the current behavior.  So, if you depend on the true/false
-strings, please stringify the return value fo C<feedback_private> first.
+Returns an L<Object::eBay::Boolean> object representing 'true' if the user's
+feedback score is private.  Returns 'false' if the user's feedback score is
+public.
  
 =head1 DIAGNOSTICS
  

@@ -2,6 +2,8 @@
 version : 0.2.0
 date    : Fri Jun 20 17:04:13 MDT 2008
 changes :
+    DEPRECATION:
+        - Use User->is_feedback_private instead of User->feedback_private
     FIXES:
         - minor documentation corrections
     NEW:

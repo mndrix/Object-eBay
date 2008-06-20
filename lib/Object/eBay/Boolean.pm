@@ -38,7 +38,7 @@ Object::eBay::Boolean - Represents a boolean return value
 =head1 SYNOPSIS
 
     # assuming that $item is an Object::eBay::Item object
-    my $private = $item->seller->feedback_private();
+    my $private = $item->seller->is_feedback_private();
     
     # In string context, yields 'true' or 'false'
     print "Is the feedback private? $private\n";

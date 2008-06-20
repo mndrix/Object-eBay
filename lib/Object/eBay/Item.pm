@@ -6,6 +6,7 @@ use Class::Std; {
     use strict;
     use base qw( Object::eBay );
     use overload '""' => 'item_id', fallback => 1;
+    use Object::eBay::Boolean;
 
     sub api_call       { "GetItem" };
     sub response_field { "Item"    };
@@ -44,9 +45,12 @@ use Class::Std; {
         my $status = $self->selling_status->listing_status;
         die "eBay item #$self has no listing status\n" if not defined $status;
 
-        return   if $status eq 'Active';
-        return 1 if $status eq 'Ended';
-        return 1 if $status eq 'Completed';
+        my $true = Object::eBay::Boolean->true;
+        my $false = Object::eBay::Boolean->false;
+
+        return $false if $status eq 'Active';
+        return $true  if $status eq 'Ended';
+        return $true  if $status eq 'Completed';
         die "eBay item #$self has an unknown listing status: $status\n";
     }
 
@@ -140,8 +144,8 @@ specify C<needs_methods> correctly, this method will not be available.
 
 =head2 is_ended
 
-Returns true if the eBay auction for this item has ended.  Otherwise, it
-returns false.
+Returns an L<Object::eBay::Boolean> true value if the eBay auction for this
+item has ended.  Otherwise, it returns a false object.
 
 =head2 item_id
 

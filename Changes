@@ -6,6 +6,7 @@ changes :
         - Use User->is_feedback_private instead of User->feedback_private
     FIXES:
         - minor documentation corrections
+        - make Item->is_ended return a Boolean object for consistency
     NEW:
         - new true and false methods on the Boolean class
         - added ListingDetails->start_time

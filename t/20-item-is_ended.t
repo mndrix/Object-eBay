@@ -19,9 +19,9 @@ my $mocked = Test::MockObject->new;
 
 # test the normal cases
 my %tests = (
-    Active    => undef,
-    Completed => 1,
-    Ended     => 1,
+    Active    => 'false',
+    Completed => 'true',
+    Ended     => 'true',
 );
 my $item = Object::eBay::Item->new({ item_id => 12345 });
 while ( my ($value, $expected) = each %tests ) {

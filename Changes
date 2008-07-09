@@ -2,8 +2,8 @@
 version : 0.3.0
 date    : Wed Jul  9 15:17:40 MDT 2008
 changes :
-    DEPRECATION:
     FIXES:
+        - minor documentation corrections
     NEW:
         - support for retrieving item specifics (attributes)
 ---

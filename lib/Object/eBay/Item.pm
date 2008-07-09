@@ -18,6 +18,10 @@ use Class::Std; {
     });
 
     __PACKAGE__->complex_attributes({
+        AttributeSetArray => {
+            class       => 'Attributes',
+            DetailLevel => 'ItemReturnAttributes',
+        },
         BuyItNowPrice => {
             class => 'Currency',
         },
@@ -39,6 +43,8 @@ use Class::Std; {
     });
 
     sub item_id  { shift->api_inputs->{ItemID} }
+
+    sub attributes { shift->attribute_set_array }
 
     sub is_ended {
         my ($self) = @_;
@@ -123,9 +129,17 @@ on eBay.
 A single 'item_id' argument is required.  The value of the argument should be
 the eBay item ID of the item you want to represent.
 
+=head2 attributes
+
+Returns an L<Object::eBay::Attributes> object representing all the attributes
+about this item.  If you plan to use this method, you must specify
+'attribute_set_array' (sorry) in the C<needs_methods> list when creating the
+object (see L<Object::eBay/new>).  If you don't specify C<needs_methods>
+correctly, this method will return incorrect results.
+
 =head2 buy_it_now_price
 
-Returns a L<Object::eBay::Currency> object indicating the "Buy It Now" price
+Returns an L<Object::eBay::Currency> object indicating the "Buy It Now" price
 for this item.  If the item has no Buy It Now price, a price of "0" is
 returned.  Although this may not be optimal behavior, it adhere's to eBay's
 usage.
@@ -138,9 +152,9 @@ deprecated because the docs on eBay are contradictory.  Use it with caution.
 =head2 description
 
 Returns the HTML text of the item's description.  If you plan to use this
-method on an Object::eBay::Item object, please specify 'description' in the
-C<needs_methods> list when creating the object (see L</new>).  If you don't
-specify C<needs_methods> correctly, this method will not be available.
+method, please specify 'description' in the C<needs_methods> list when
+creating the object (see L<Object::eBay/new>).  If you don't specify
+C<needs_methods> correctly, this method will return incorrect results.
 
 =head2 is_ended
 

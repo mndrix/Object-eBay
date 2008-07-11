@@ -11,7 +11,7 @@ my $item_id = shift @ARGV;
 Object::eBay->init( JJG::eBay->_ebay_object() );
 my $item = Object::eBay::Item->new({
     item_id       => $item_id,
-    #needs_methods => [qw( description watch_count )],
+    needs_methods => [qw( attribute_set_array )],
 });
 
 my $title       = $item->title;
@@ -27,6 +27,7 @@ my $bin_price = $item->buy_it_now_price;
 my $end_time    = $item->listing_details->end_time;
 my $start_time    = $item->listing_details->end_time;
 my $ended  = $item->is_ended;
+my ($condition) = $item->attributes->find(10244);
 my $bin_available    = $item->listing_details->is_buy_it_now_available;
 my @images      = $item->pictures;
 
@@ -45,5 +46,6 @@ print "BIN available : $bin_available\n";
 print "end time    : '$end_time'\n";
 print "start time  : '$start_time'\n";
 print "ended       : '$ended'\n";
+print "condition   : '$condition'\n";
 print "Image: $_\n" for @images;
 #print "description: '$description'\n";

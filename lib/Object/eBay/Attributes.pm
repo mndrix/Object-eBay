@@ -15,14 +15,14 @@ use Class::Std; {
         $value_for{$ident} = $args_ref->{object_details} || {};
     }
 
+    sub _maybe_array { ref($_[0]) eq 'ARRAY' ? @{$_[0]} : $_[0] }
     sub find {
         my ($self, $pattern) = @_;
         my $array = $self->get_details;
         return if not ref $array;
-        $array = [$array] if ref($array) ne 'ARRAY';
-        my @sets          = map { $_->{AttributeSet} } @$array;
-        my @attributes    = map { @{ $_->{Attribute} } }
-                            map { ref($_) eq 'ARRAY' ? @$_ : $_ }
+        my @sets          = map { $_->{AttributeSet} } _maybe_array($array);
+        my @attributes    = map { _maybe_array( $_->{Attribute} ) }
+                            map { _maybe_array($_) }
                             @sets;
         my @needles = ref($pattern) eq 'Regexp'
                     ? grep { $_->{Value}{ValueLiteral} =~ $pattern } @attributes

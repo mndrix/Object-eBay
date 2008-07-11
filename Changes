@@ -1,4 +1,10 @@
 ---
+version : 0.3.1
+date    : Thu Jul 10 23:06:50 MDT 2008
+changes :
+    FIXES:
+        - correctly handle some unusual attribute combinations on auctions
+---
 version : 0.3.0
 date    : Wed Jul  9 15:17:40 MDT 2008
 changes :

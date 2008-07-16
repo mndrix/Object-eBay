@@ -1,5 +1,5 @@
 package Object::eBay::Item;
-our $VERSION = '0.3.1';
+our $VERSION = '0.3.2';
 
 use Class::Std; {
     use warnings;
@@ -7,6 +7,7 @@ use Class::Std; {
     use base qw( Object::eBay );
     use overload '""' => 'item_id', fallback => 1;
     use Object::eBay::Boolean;
+    use Object::eBay::Attributes;
 
     sub api_call       { "GetItem" };
     sub response_field { "Item"    };
@@ -44,7 +45,14 @@ use Class::Std; {
 
     sub item_id  { shift->api_inputs->{ItemID} }
 
-    sub attributes { shift->attribute_set_array }
+    sub attributes {
+        my $attributes = eval { shift->attribute_set_array };
+        return $attributes if $attributes;
+
+        # some auctions have no attributes at all
+        # in this case, we want an empty Attributes object
+        return Object::eBay::Attributes->new({ object_details => 'none' });
+    }
 
     sub is_ended {
         my ($self) = @_;

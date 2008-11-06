@@ -217,7 +217,7 @@ use Class::Std; {
                 my $value = eval { $self->get_details->{$ebay_name} };
                 croak $@ if $@ && $@ =~ /\A eBay/xms;
                 croak "Can't find '$ebay_name' via ${pkg}::$method_name()"
-                    if !defined $value;
+                    if !defined($value) and !$meta->{undefined_value_ok};
 
                 return $value if blessed $value;  # already inflated the value
 
@@ -233,6 +233,11 @@ use Class::Std; {
                         if !defined $value;
                     $self->get_details->{$ebay_name} = $value;
                     return $value;
+                }
+                elsif ( my $converter = $meta->{convert_value} ) {
+                    croak "The value of 'convert_value' should be\n"
+                        . "a code reference.\n" if ref($converter) ne 'CODE';
+                    return $converter->($value);
                 }
 
                 return $value;

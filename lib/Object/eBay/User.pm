@@ -10,12 +10,19 @@ use Class::Std; {
     sub response_field { "User"    };
 
     __PACKAGE__->simple_attributes(qw{
-        Email
         FeedbackScore
         UserID
     });
 
     __PACKAGE__->complex_attributes({
+        Email => {
+            undefined_value_ok => 1,
+            convert_value => sub {
+                my $email = shift;
+                return if defined($email) and $email eq 'Invalid Request';
+                return $email;
+            },
+        },
         FeedbackPrivate => {
             class => 'Boolean',
         }
@@ -55,7 +62,8 @@ represent.
 
 =head2 email
 
-Returns the user's email address if available.
+Returns the user's email address if available.  If it's not available, returns
+C<undef>.
 
 =head2 feedback_score
 
@@ -69,7 +77,7 @@ public.
 
 =head2 user_id
 
-Returns the user's name or ID if available.
+Returns the user's name (username).
  
 =head1 DIAGNOSTICS
  

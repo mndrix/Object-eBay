@@ -11,13 +11,20 @@ use Class::Std; {
     sub api_call       { q{} };
     sub response_field { q{} };
 
-    __PACKAGE__->simple_attributes( 'ListingStatus', 'QuantitySold' );
+    __PACKAGE__->simple_attributes(qw(
+        BidCount
+        ListingStatus
+        QuantitySold
+    ));
     __PACKAGE__->complex_attributes({
         CurrentPrice => {
             class => 'Currency',
         },
         ConvertedCurrentPrice => {
             class => 'Currency',
+        },
+        HighBidder => {
+            class => 'User',
         },
     });
 }
@@ -46,6 +53,10 @@ Represents the selling status information for an eBay item.
 Objects of this class cannot be constructed directly.  They are returned as
 the result of method calls on other objects.
 
+=head2 bid_count
+
+Returns the number of bids which have been placed on this item so far.
+
 =head2 converted_current_price
 
 Returns an L<Object::eBay::Currency> object indicating the price of an item
@@ -56,6 +67,11 @@ is probably going to be in U.S. Dollars.
 
 Returns an L<Object::eBay::Currency> object indicating the price of an item.
 The price will be in whatever currency the seller designated.
+
+=head2 high_bidder
+
+Returns an L<Object::eBay::User> object indicating which user is the current
+high bidder.
 
 =head2 listing_status
 

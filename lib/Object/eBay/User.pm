@@ -1,5 +1,5 @@
 package Object::eBay::User;
-our $VERSION = '0.3.2';
+our $VERSION = '0.4.0';
 
 use Class::Std; {
     use warnings;

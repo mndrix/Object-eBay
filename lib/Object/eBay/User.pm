@@ -53,7 +53,7 @@ represent.
 
 =head2 feedback_score
 
-Returns an integere indicating the user's feedback score.
+Returns an integer indicating the user's feedback score.
 
 =head2 is_feedback_private
 

@@ -10,7 +10,9 @@ use Class::Std; {
     sub response_field { "User"    };
 
     __PACKAGE__->simple_attributes(qw{
+        Email
         FeedbackScore
+        UserID
     });
 
     __PACKAGE__->complex_attributes({
@@ -51,6 +53,10 @@ Requires a single hashref as the argument.  The hashref should contain a key
 'user_id' whose value is the ID of the user you want the new object to
 represent.
 
+=head2 email
+
+Returns the user's email address if available.
+
 =head2 feedback_score
 
 Returns an integer indicating the user's feedback score.
@@ -60,6 +66,10 @@ Returns an integer indicating the user's feedback score.
 Returns an L<Object::eBay::Boolean> object representing 'true' if the user's
 feedback score is private.  Returns 'false' if the user's feedback score is
 public.
+
+=head2 user_id
+
+Returns the user's name or ID if available.
  
 =head1 DIAGNOSTICS
  

@@ -1,6 +1,14 @@
 ---
+version : 0.5.0
+date    : Tue Aug 10 13:33:39 UTC 2010
+changes :
+    FIXES:
+        - minor test suite corrections
+    NEW:
+        - support for retrieving an item's condition
+---
 version : 0.4.0
-date    :
+date    : Thu Nov 6 15:22:24 2008 -0700
 changes :
     FIXES:
         - minor documentation corrections

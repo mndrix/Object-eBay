@@ -528,6 +528,10 @@ You can also look for information at:
 
 =over 4
 
+=item * GitHub
+
+L<http://github.com/mndrix/Object-eBay>
+
 =item * AnnoCPAN: Annotated CPAN documentation
 
 L<http://annocpan.org/dist/Object-eBay>

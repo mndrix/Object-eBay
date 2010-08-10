@@ -8,6 +8,7 @@ use Class::Std; {
     use overload '""' => 'item_id', fallback => 1;
     use Object::eBay::Boolean;
     use Object::eBay::Attributes;
+    use Object::eBay::Condition;
 
     sub api_call       { "GetItem" };
     sub response_field { "Item"    };
@@ -107,6 +108,19 @@ use Class::Std; {
 
         return @image_urls;
     }
+
+    # can't be done with complex_attributes because ConditionID and
+    # ConditionDisplayName are at the same depth in the Item response
+    sub condition {
+        my ($self) = @_;
+        my $id   = $self->get_details->{ConditionID};
+        my $name = $self->get_details->{ConditionDisplayName};
+        return if !$id && !$name;
+        return Object::eBay::Condition->new({
+            id   => $id,
+            name => $name,
+        });
+    }
 }
 
 1;
@@ -151,6 +165,11 @@ Returns an L<Object::eBay::Currency> object indicating the "Buy It Now" price
 for this item.  If the item has no Buy It Now price, a price of "0" is
 returned.  Although this may not be optimal behavior, it adhere's to eBay's
 usage.
+
+=head2 condition
+
+Returns an L<Object::eBay::Condition> object representing this item's
+condition.  If condition information is not available, returns C<undef>.
 
 =head2 country
 

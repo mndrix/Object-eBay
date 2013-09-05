@@ -1,5 +1,5 @@
 package Object::eBay::Currency;
-our $VERSION = '0.5.0';
+our $VERSION = '0.5.1';
 
 use Class::Std; {
     use warnings;

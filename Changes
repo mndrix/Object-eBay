@@ -1,4 +1,10 @@
 ---
+version : 0.5.1
+date    : Thu Sep  5 13:53:54 UTC 2013
+changes :
+    FIXES:
+        - CPAN metadata (David Steinbrunner)
+---
 version : 0.5.0
 date    : Tue Aug 10 13:33:39 UTC 2010
 changes :

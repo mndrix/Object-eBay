@@ -16,6 +16,11 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     add_to_cleanup      => [ 'Object-eBay-*' ],
+    meta_merge => {
+        resources => {
+            repository => 'https://github.com/mndrix/Object-eBay',
+        },
+    },
 );
 
 $builder->create_build_script();

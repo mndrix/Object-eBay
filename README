@@ -14,11 +14,3 @@ To install this module, run the following commands:
     ./Build
     ./Build test
     ./Build install
-
-
-COPYRIGHT AND LICENCE
-
-Copyright (C) 2006-2008 Michael Hendricks <michael@ndrix.org>
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
